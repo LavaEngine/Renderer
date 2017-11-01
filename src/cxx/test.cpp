@@ -1,12 +1,15 @@
-//#include "math.h"
+//#include <stdio.h>
+//#include <stdlib.h>
+#include <string>
+#include <iostream>
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "LvShaderCompiler.h"
 
+using namespace std;
+using namespace lv;
 
-//using namespace lv;
-int main() 
+int main()
 {
 	if (!glfwInit()) {
 		fprintf(stderr, "Failed to initialize GLFW\n");
@@ -18,7 +21,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 	//glfwWindowHint(GLFW_CONTEXT_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
-	
+
 	GLFWwindow* window;
 	window = glfwCreateWindow(1024, 768, "test", NULL, NULL);
 
@@ -27,7 +30,7 @@ int main()
 		return -1;
 	}
 
-	glfwMakeContextCurrent(window); 
+	glfwMakeContextCurrent(window);
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return -1;
@@ -53,6 +56,18 @@ int main()
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vBuffer), vBuffer, GL_STATIC_DRAW);
 
+	ShaderCompiler* cmp = new ShaderCompiler();
+	string vsSrc = "#version 330 core\n\
+					layout(location = 0) in vec3 vertexPosition_modelspace;\n\
+					void main(){\n\
+						gl_Position.xyz = vertexPosition_modelspace;\n\
+						gl_Position.w = 1.0;\n\
+					}\n\
+				";
+
+	cmp->CompileShader(vsSrc.c_str(), 3, ShaderCompiler::LvShaderProgramType::Vertex);
+	delete cmp;
+
 	do {
 		// Clear the screen. It's not mentioned before Tutorial 02, but it can cause flickering, so it's there nonetheless.
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -60,7 +75,7 @@ int main()
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexArrayID);
 
-		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		// Draw the triangle !
 		glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle

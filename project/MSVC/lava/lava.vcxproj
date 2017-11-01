@@ -69,7 +69,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\..\src\h;..\..\..\src\h;..\..\..\thirdParties\eigen-eigen-5a0156e40feb\Eigen;..\..\..\thirdParties\glew\include;..\..\..\thirdParties\glfw\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath);..\..\src\h;..\..\..\src\h;..\..\..\thirdParties\eigen-eigen-5a0156e40feb\Eigen;..\..\..\thirdParties\glew\include;..\..\..\thirdParties\glfw\include;</IncludePath>
     <LibraryPath>..\..\..\thirdParties\glew\lib\Release\Win32;..\..\..\thirdParties\glfw\lib-vc2015;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,10 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\h\math.h" />
+    <ClCompile Include="..\..\..\src\cxx\LvShaderCompiler.cpp" />
+    <ClCompile Include="..\..\..\src\cxx\test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\cxx\test.cpp" />
+    <ClInclude Include="..\..\..\src\h\LvShaderCompiler.h" />
+    <ClInclude Include="..\..\..\src\h\math.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
