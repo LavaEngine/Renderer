@@ -1,3 +1,10 @@
 ﻿  test.cpp
-  lava.vcxproj -> D:\Desktop\LAVA\project\MSVC\lava\Debug\lava.exe
-  lava.vcxproj -> D:\Desktop\LAVA\project\MSVC\lava\Debug\lava.pdb (Partial PDB)
+  LvShader.cpp
+  正在生成代码...
+LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+  lava.vcxproj -> E:\WORKS\PROJECT\LAVA\project\MSVC\lava\Debug\lava.exe
+  lava.vcxproj -> E:\WORKS\PROJECT\LAVA\project\MSVC\lava\Debug\lava.pdb (Partial PDB)
+  子目录或文件 E:\WORKS\PROJECT\LAVA\project\MSVC\lava\Debug\Shader 已经存在。
+  E:\WORKS\PROJECT\LAVA\project\MSVC\lava\Shader\testFragment.shader
+  E:\WORKS\PROJECT\LAVA\project\MSVC\lava\Shader\testVertex.shader
+  复制了 2 个文件

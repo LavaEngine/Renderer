@@ -86,6 +86,10 @@
       <AdditionalLibraryDirectories>..\..\..\thirdParties\glfw\lib-vc2015;..\..\..\thirdParties\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>md $(ProjectDir)Debug\Shader
+xcopy /r /y /e $(ProjectDir)Shader $(SolutionDir)Debug\Shader</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -123,11 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\cxx\LvShaderCompiler.cpp" />
+    <ClCompile Include="..\..\..\src\cxx\LvShader.cpp" />
     <ClCompile Include="..\..\..\src\cxx\test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\h\LvShaderCompiler.h" />
+    <ClInclude Include="..\..\..\src\h\LvDefines.h" />
+    <ClInclude Include="..\..\..\src\h\LvShader.h" />
     <ClInclude Include="..\..\..\src\h\math.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

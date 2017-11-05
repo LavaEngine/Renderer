@@ -18,7 +18,7 @@
     <ClCompile Include="..\..\..\src\cxx\test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\cxx\LvShaderCompiler.cpp">
+    <ClCompile Include="..\..\..\src\cxx\LvShader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -26,7 +26,10 @@
     <ClInclude Include="..\..\..\src\h\math.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\h\LvShaderCompiler.h">
+    <ClInclude Include="..\..\..\src\h\LvDefines.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\h\LvShader.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

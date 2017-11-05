@@ -2,9 +2,13 @@
 //#include <stdlib.h>
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <streambuf>
+
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
-#include "LvShaderCompiler.h"
+#include "LvShader.h"
+#include "math.h"
 
 using namespace std;
 using namespace lv;
@@ -56,26 +60,68 @@ int main()
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vBuffer), vBuffer, GL_STATIC_DRAW);
 
-	ShaderCompiler* cmp = new ShaderCompiler();
-	string vsSrc = "#version 330 core\n\
-					layout(location = 0) in vec3 vertexPosition_modelspace;\n\
-					void main(){\n\
-						gl_Position.xyz = vertexPosition_modelspace;\n\
-						gl_Position.w = 1.0;\n\
-					}\n\
-				";
+	std::ifstream ifs;
 
-	cmp->CompileShader(vsSrc.c_str(), 3, ShaderCompiler::LvShaderProgramType::Vertex);
-	delete cmp;
+	ifs.open("Shader/testVertex.shader");
+	string vsSrc((std::istreambuf_iterator<char>(ifs)),
+		std::istreambuf_iterator<char>());
+	ifs.close();
+
+	LvShaderSource* vs = new LvShaderSource(vsSrc.c_str(), ShaderType::Vertex);
+	string log;
+	if (!vs->Compile(&log)) {
+		printf(log.c_str());
+	}
+	
+
+	ifs.open("Shader/testFragment.shader");
+
+	string fsSrc((std::istreambuf_iterator<char>(ifs)),
+		std::istreambuf_iterator<char>());
+	ifs.close();
+
+	LvShaderSource* fs = new LvShaderSource(fsSrc.c_str(), ShaderType::Fragment);
+	if (fs->Compile(&log)) {
+		printf(log.c_str());
+	}
+
+
+	uint32 program = glCreateProgram();
+	glAttachShader(program, vs->shader());
+	glAttachShader(program, fs->shader());
+	glLinkProgram(program);
+
+	int32 linkResult = -1;
+	int32 infoLen = 0;
+	glGetProgramiv(program, GL_LINK_STATUS, &linkResult);
+	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLen);
+
+	if (infoLen > 0) 
+	{
+		char* log = (char*)malloc((infoLen + 1) * sizeof(char));
+		glGetProgramInfoLog(program, infoLen, nullptr,log);
+		printf("%s", log);
+		free(log);
+	}
+
+	delete vs;
+	delete fs;
+
+
+	GLuint vec3ID = glGetUniformLocation(program, "inputColor");
 
 	do {
 		// Clear the screen. It's not mentioned before Tutorial 02, but it can cause flickering, so it's there nonetheless.
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glUseProgram(program);
 
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexArrayID);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+		glUniform3f(vec3ID, 1.0f, 0.0f, 1.0f);
 
 		// Draw the triangle !
 		glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
